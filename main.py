@@ -34,13 +34,20 @@ def main(stdscr):
         gray = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
         # Display the resulting frame
         rows, cols = gray.shape
+        # gray = cv.Canny(gray, 100,100)
         cv.imshow('Source', gray)
         stdscr.clear()
+        frame_string = ""
         for i in range(rows):
+            
             for j in range(cols):
+                frame_string = frame_string +CHAR_DENSITY_MAPPING[int(maprange((0,255), (0,len(CHAR_DENSITY_MAPPING)-1), gray[i, j]))]
                 # stdscr.addch(int(maprange((0,rows-1),(0,termrows-2),i)),int(maprange((0,cols-1),(0,termcols-2),j)) , CHAR_DENSITY_MAPPING[int(maprange((0,255), (0,len(CHAR_DENSITY_MAPPING)-1), gray[i, j]))])
-                stdscr.addch(i,j,CHAR_DENSITY_MAPPING[int(maprange((0,255), (0,len(CHAR_DENSITY_MAPPING)-1), gray[i, j]))])
+                # stdscr.addch(i,j,CHAR_DENSITY_MAPPING[int(maprange((0,255), (0,len(CHAR_DENSITY_MAPPING)-1), gray[i, j]))])
+            frame_string = frame_string + "\n"
+        stdscr.addstr(0,0,frame_string)
         stdscr.refresh()
+        print(frame_string)
         if cv.waitKey(1) == ord('q'):
             break
     # When everything done, release the capture
